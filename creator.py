@@ -6,5 +6,5 @@ def create_model(genre='country', lookback=3):
 	for song in loader.songs_to_load(genre=genre):
 		for line in song['lyrics']:
 			markov.feed(line)
-	markov.update()
+	markov.finalize()
 	return markov

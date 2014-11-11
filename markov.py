@@ -13,19 +13,15 @@ class MarkovChain(object):
 		self.lookback = lookback
 
 	def feed(self, line):
-		self.lines.append(line)
+		line = line.split()
+		if len(line) > self.lookback:
+			for i in xrange(len(line)+1):
+				self.markov_map[' '.join(line[max(0,i-self.lookback):i])][' '.join(line[i:i+1])] += 1
 
-	def update(self):
-		#Generate map in the form word1 -> word2 -> occurences of word2 after word1
-		for line in self.lines[:-1]:
-			line = line.split()
-			if len(line) > self.lookback:
-				for i in xrange(len(line)+1):
-					self.markov_map[' '.join(line[max(0,i-self.lookback):i])][' '.join(line[i:i+1])] += 1
-
+	def finalize(self):
 		#Convert map to the word1 -> word2 -> probability of word2 after word1
 		for word, following in self.markov_map.items():
-			total = float(sum(following.values()))
+			total = float(sum(following.itervalues()))
 			for key in following:
 				following[key] /= total
 
