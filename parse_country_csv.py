@@ -11,22 +11,30 @@ import sqlite3
 def main():
 	success = total = 0
 	#Tuples of (artist, title)
-	songs = set()
+	songs = {}
 	with open('country.csv', 'rb') as fp:
 		reader = csv.DictReader(fp)
 		for item in reader:
-			artist, title = item['Artist'], item['Title']
+			artist, title, year = item['Artist'], item['Title'], item['Year']
 			artist = artist.decode('latin1')
 			title = title.decode('latin1')
-			songs.add((artist, title))
+			try:
+				year = int(year)
+			except ValueError:
+				year = None
+			if (artist, title) in songs:
+				continue
+			songs[(artist, title)] = year
 	print "Checking %d unique songs" % len(songs)
 	db = sqlite3.connect('e:\\lyrics.db')
 	cursor = db.cursor()
-	for artist, title in songs:
+	for (artist, title), year in songs.iteritems():
 		row = db.execute("select 1 from lyrics where artist=? and title=?", (artist, title)).fetchone()
 		if row:
 			success += 1
 			cursor.execute("update lyrics set genre='country' where artist=? and title=?", (artist, title))
+			if year:
+				cursor.execute("update lyrics set year=? where artist=? and title=?", (year, artist, title))
 		total += 1
 	print "%d/%d" % (success, total)
 	db.commit()
