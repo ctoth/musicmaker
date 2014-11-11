@@ -13,6 +13,10 @@ class Song(object):
 		self.lines.append(line)
 
 	def can_line_go_next(self, line):
+		if len(self.lines) == 1:
+			first_line = self.lines[0]
+			if lines_rhyme(first_line, line):
+				return False
 		if len(self.lines) < 2:
 			syllables = count_line_syllables(line)
 			if syllables < self.MIN_SYLLABLES or syllables > self.MAX_SYLLABLES:
