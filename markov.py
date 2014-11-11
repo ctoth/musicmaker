@@ -26,21 +26,24 @@ class MarkovChain(object):
 				following[key] /= total
 
 	#Typical sampling from a categorical distribution
+	#is iterator-safe.
 	def sample(self, items):
 		next_word = None
 		t = 0.0
+		rnd = random()
 		for k, v in items:
 			t += v
-			if t and random() < v/t:
+			if rnd < t:
 				next_word = k
+				break
 		return next_word
 
 	def generate(self):
 		sentence = []
-		next_word = self.sample(self.markov_map[''].items())
+		next_word = self.sample(self.markov_map[''].iteritems())
 		while next_word != '':
 			sentence.append(next_word)
-			next_word = self.sample(self.markov_map[' '.join(sentence[-self.lookback:])].items())
+			next_word = self.sample(self.markov_map[' '.join(sentence[-self.lookback:])].iteritems())
 		sentence = ' '.join(sentence)
 		if sentence in self.lines:
 			return self.generate()
