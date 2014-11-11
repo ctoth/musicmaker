@@ -28,13 +28,14 @@ class MarkovChain(object):
 	#Typical sampling from a categorical distribution
 	#is iterator-safe.
 	def sample(self, items):
-		next_word = None
 		t = 0.0
 		rnd = random()
+		#beware the rare crash condition: due to floating point errors, it's possible we never hit the random number.
+		#The solution is to continually assign next_word in case the loop executes to its conclusion.
 		for k, v in items:
 			t += v
+			next_word = k
 			if rnd < t:
-				next_word = k
 				break
 		return next_word
 
