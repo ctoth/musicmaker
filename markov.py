@@ -6,11 +6,11 @@ from random import random
 class MarkovChain(object):
 
 	def __init__(self, lines=None, lookback=2):
-		if lines is None:
-			lines = []
-		self.lines = lines
 		self.markov_map = defaultdict(lambda:defaultdict(int))
 		self.lookback = lookback
+		if lines is not None:
+			for i in lines:
+				self.feed(i)
 
 	def feed(self, line):
 		line = line.split()
@@ -46,7 +46,5 @@ class MarkovChain(object):
 			sentence.append(next_word)
 			next_word = self.sample(self.markov_map[' '.join(sentence[-self.lookback:])].iteritems())
 		sentence = ' '.join(sentence)
-		if sentence in self.lines:
-			return self.generate()
 		return sentence
 
