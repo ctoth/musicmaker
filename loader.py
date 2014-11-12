@@ -1,4 +1,4 @@
-import sqlite3
+from sqlalchemy import create_engine
 import html_stripper
 
 def song_to_list(song_text):
@@ -9,10 +9,12 @@ def song_to_list(song_text):
 	text = text.replace('\r\n', '\n')
 	return text.split('\n')
 
-def songs_to_load(genre='country'):
-	con = sqlite3.connect('e:\\lyrics.db')
-	con.row_factory = sqlite3.Row
-	cur = con.execute('select * from lyrics where genre=?', (genre, ))
+def songs_to_load(genre=None):
+	engine = create_engine('postgresql://lyrics:lyrics1@allinaccess.com')
+	if genre is not None:
+		cur = engine.execute('select * from lyrics where genre=%s', (genre, ))
+	else:		
+		cur = engine.execute('select * from lyrics')
 	for i in cur.fetchall():
 		res = dict(i)
 		res['lyrics'] = song_to_list(res['lyrics'])
