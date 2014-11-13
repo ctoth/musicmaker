@@ -4,6 +4,7 @@ class Song(object):
 	MIN_SYLLABLES = 6
 	MAX_SYLLABLES = 10
 	LINES_PER_VERSE = 4
+	SYLLABLE_RANGE = 1
 
 	def __init__(self):
 		self.lines = []
@@ -16,6 +17,10 @@ class Song(object):
 		if len(self.lines) == 1:
 			first_line = self.lines[0]
 			if lines_rhyme(first_line, line):
+				return False
+			first_syllables = count_line_syllables(first_line)
+			syl_range = first_syllables - self.SYLLABLE_RANGE, first_syllables + self.SYLLABLE_RANGE
+			if count_line_syllables(line) not in xrange(*syl_range):
 				return False
 		if len(self.lines) < 2:
 			syllables = count_line_syllables(line)
