@@ -15,7 +15,7 @@ def update_song_info(song):
 	print "Set genre for %s - %s to %s" % (song['artist'], song['title'], info['genre'])
 
 def process_song(song):
-	print "checking artist: %s, title: %s" % (song['artist'], song['title'])
+	print u"checking artist: %s, title: %s".encode('UTF-8') % (song['artist'], song['title'])
 	try:
 		update_song_info(song)
 	except requests.exceptions.HTTPError:
