@@ -53,7 +53,7 @@ def add_line_to_song(song, model):
 		line = model.generate()
 		can_add = song.can_line_go_next(line)
 	song.add_line(line)
-	print line
+	print line.encode('UTF-8')
 	return song
 
 def strip_punctuation(word):

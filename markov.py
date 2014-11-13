@@ -32,6 +32,7 @@ class MarkovChain(object):
 		rnd = random()
 		#beware the rare crash condition: due to floating point errors, it's possible we never hit the random number.
 		#The solution is to continually assign next_word in case the loop executes to its conclusion.
+		next_word = None
 		for k, v in items:
 			t += v
 			next_word = k
