@@ -42,5 +42,6 @@ def convert_title(title):
 	"""
 	title = title.lower()
 	title = title.replace(' ', '-')
+	title = title.replace('#', '')
 	title = apostrophe_re.sub('-', title)
 	return title
