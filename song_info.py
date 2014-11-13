@@ -22,7 +22,7 @@ Raises requests.exceptions.HTTPError for anything else, such as song not found."
 	response.raise_for_status()
 	tree = lxml.html.fromstring(response.content)
 	genre = tree.xpath('//div[@class="pagetitle"]/p[contains(text(), "Genre:")]/a/text()')
-	if genre is None:
+	if not genre:
 		raise GenreNotFound("No genre found for artist %s title %s" % (artist, title))
 	genre = genre[0]
 	result = {}
