@@ -7,6 +7,7 @@ def find_song_to_work_on():
 	return song
 
 def update_song_info(song):
+	print "checking artist: %s, title: %s" % (song['artist'], song['title'])
 	info = song_info.get_song_info(song['artist'], song['title'])
 	engine.execute("update lyrics set genre=%s where artist=%s and title=%s;", (info['genre'], song['artist'], song['title']))
 	engine.execute('commit')
