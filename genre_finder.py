@@ -4,7 +4,7 @@ import song_info
 import requests
 
 def songs_to_work_on():
-	songs = engine.execute("select * from lyrics where genre is NULL limit 100 offset %s", (random.randint(1, 2500)*100,))
+	songs = engine.execute("select * from lyrics where genre is NULL limit 1000 offset %s", (random.randint(1, 250)*1000,))
 	for song in songs:
 		yield song
 
