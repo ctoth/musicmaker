@@ -12,7 +12,7 @@ def song_to_list(song_text):
 def songs_to_load(genre=None):
 	engine = create_engine('postgresql://lyrics:lyrics1@allinaccess.com')
 	if genre is not None:
-		cur = engine.execute('select * from lyrics where genre=%s', (genre, )) stream_results=True)
+		cur = engine.execute('select * from lyrics where genre=%s', (genre, ), stream_results=True)
 	else:		
 		cur = engine.execute('select * from lyrics')
 	for i in cur.fetchall():
