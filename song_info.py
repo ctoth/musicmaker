@@ -16,7 +16,7 @@ def get_song_info(artist, title):
 
 Raises requests.exceptions.HTTPError for anything else, such as song not found."""
 	artist = artist.lower().replace(' ','-')
-	title = title.lower().replace(' ', '-')
+	title = convert_title(title)
 	url = 'http://www.songlyrics.com/%s/%s-lyrics/' % (artist, title)
 	response = requests.get(url)
 	response.raise_for_status()
@@ -44,5 +44,3 @@ def convert_title(title):
 	title = title.replace(' ', '-')
 	title = apostrophe_re.sub('-', title)
 	return title
-#print get_song_info("Trz", "hoody hoo")
-print convert_title("Hoody Hoo")
