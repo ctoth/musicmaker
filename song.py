@@ -37,7 +37,7 @@ class Song(object):
 
 def count_line_syllables(line):
 	words = line.split()
-	return sum([poetry.nsyl(word) for word in words])
+	return sum([poetry.approx_nsyl(word) for word in words])
 
 def lines_rhyme(line1, line2):
 	last1 = strip_punctuation(line1.split()[-1])
