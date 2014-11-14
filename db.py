@@ -14,6 +14,8 @@ class Updater(object):
 				getattr(self, item).update(value)
 			elif getattr(self, item) is None:
 				setattr(self, item, value)
+				print "Setting %s to %s" % (item, value.encode('utf-8', 'ignore'))
+
 
 Base = declarative_base(cls=Updater)
 Base.metadata.reflect(engine)
