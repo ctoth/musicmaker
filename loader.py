@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from db import engine
 import html_stripper
 
 def song_to_list(song_text):
@@ -10,11 +10,10 @@ def song_to_list(song_text):
 	return text.split('\n')
 
 def songs_to_load(genre=None):
-	engine = create_engine('postgresql://lyrics:lyrics1@allinaccess.com')
 	if genre is not None:
-		cur = engine.execute('select * from lyrics where genre=%s', (genre, ), stream_results=True)
+		cur = engine.execute('select * from songs where genre=%s', (genre, ), stream_results=True)
 	else:		
-		cur = engine.execute('select * from lyrics')
+		cur = engine.execute('select * from songs')
 	for i in cur.fetchall():
 		res = dict(i)
 		res['lyrics'] = song_to_list(res['lyrics'])

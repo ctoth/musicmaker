@@ -5,7 +5,13 @@ requests_cache.install_cache('lyrics_cache')
 import html_to_text
 import re
 
-class GenreNotFound(Exception):
+class NotFound(Exception):
+	pass
+
+class GenreNotFound(NotFound):
+	pass
+
+class SongNotFound(NotFound):
 	pass
 
 def get_song_info(artist, title):
@@ -13,12 +19,14 @@ def get_song_info(artist, title):
 	a dictionary with the genre and lyrics.
 	Raises GenreNotFound if no genre could be found for the song. This could also indicate something changed on the site
 	to make the genre finding code not work.
-
-Raises requests.exceptions.HTTPError for anything else, such as song not found."""
+Raises SongNotFound if the song is not found
+Raises requests.exceptions.HTTPError for anything else"""
 	artist = artist.lower().replace(' ','-')
 	title = convert_title(title)
 	url = 'http://www.songlyrics.com/%s/%s-lyrics/' % (artist, title)
 	response = requests.get(url)
+	if response.status_code == 404:
+		raise SongNotFound("Unable to find song")
 	response.raise_for_status()
 	tree = lxml.html.fromstring(response.content)
 	genre = tree.xpath('//div[@class="pagetitle"]/p[contains(text(), "Genre:")]/a/text()')
@@ -29,7 +37,7 @@ Raises requests.exceptions.HTTPError for anything else, such as song not found."
 	result['genre'] = genre
 	video_link = tree.xpath('//div[@class="video-link"]/a/@href')
 	if video_link:
-		result['video_link'] = video_link[0]
+		result['youtube_link'] = video_link[0]
 	lyrics = tree.xpath('//p[@id="songLyricsDiv"]')[0]
 	lyrics = html_to_text.html_to_text(lyrics).strip('\n')
 	result['lyrics'] = lyrics
