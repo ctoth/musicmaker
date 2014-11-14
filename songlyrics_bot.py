@@ -9,5 +9,5 @@ class SonglyricsRobot(robot.Robot):
 		return info
 
 if __name__ == '__main__':
-	bot = SonglyricsRobot()
+	bot = SonglyricsRobot(to_process=10000)
 	bot.run()

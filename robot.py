@@ -28,5 +28,5 @@ class Robot(object):
 			try:
 				self.process_song(song)
 			except Exception as e:
-				print e.message
+				print e.message.encode('UTF-8')
 
