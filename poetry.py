@@ -136,3 +136,20 @@ def tokenize_from_url(url):
 # In "there once" [was a man from Nantucket], I'd want to see that "there" is unstressed, and "once" is stressed
 # But cmudict sees the single vowel in each of them as 1 (primary stress), because it looks at each word in isolation
 # Maybe for now just assume than monosyllabic words are flexible, and use cmudict for stress on polysyllabic words?
+
+
+pronunciations = {}
+def get_pronunciations():
+	global pronunciations
+	if pronunciations:
+		return prununciations
+	for line in open('cmudict.0.7a'):
+		if ';;' in line or not line.strip():
+			continue
+		word, phones = line.split(None, 1)
+		if word.endswith(')'): continue # Ignore alternative pronunciations, for now
+		pronunciations[word.lower()] = tuple(phones.split())
+	return pronunciations
+
+def pronounce(words):
+	return [phone for word in words for phone in pronunciations[word]]
